@@ -20,7 +20,6 @@ or
 ```sh
 pip install pyzmq
 ```
-<br>
 
 ### **How to REQUEST Data from the Microservice**
 All communication is done using **ZeroMQ**. To send a request, create a ZeroMQ `REQ` socket and send one of the following commands.
@@ -31,7 +30,6 @@ context = zmq.Context()
 socket = context.socket(zmq.REQ)
 socket.connect("tcp://localhost:5555") #using port 5555
 ```
-<br> 
 
 #### **1. Save a Quote**
 **Request format: `"save:{quote}"`**
@@ -48,7 +46,6 @@ if message.startswith("save:"):
     response = add_to_favorites(quote)
 
 ```
-<br> 
 
 #### **2. Retrieve Favorite Quotes**
 **Request format: `"view_fav"`**
@@ -62,7 +59,6 @@ In the microservice `fav_quote.py`, after receiving the request `view_fav`, it p
     elif message == "view_fav":
             response = show_fav_quote()
 ```
-<br> 
 
 #### **3. Remove a specific quote from favorite**
 **Request format: `"get:{quote_number}"` AND `"remove"{quote_number}"`**
