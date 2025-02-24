@@ -23,7 +23,6 @@ def add_to_favorites(quote):
 
     return f"Quote successfully saved!"
 
-
 def show_fav_quote():
     favorites = load_quotes()
 
@@ -31,6 +30,14 @@ def show_fav_quote():
         return "No favorite quotes saved."
 
     return "\n".join([f"{i+1}. {quote}" for i, quote in enumerate(favorites)])
+
+def get_quote(index):
+    favorites = load_quotes()  # Load the quotes without modifying them
+
+    if index < 1 or index > len(favorites):
+        return "Invalid quote number.", None  # Return None when the index is invalid
+
+    return favorites[index - 1], favorites[index - 1]  # Return the quote itself
 
 def remove_quote(index):
     favorites = load_quotes()
@@ -49,7 +56,7 @@ def fav_main():
     socket = context.socket(zmq.REP)
     socket.bind("tcp://*:5555")
 
-    print("Manage Favorite Quote System running on port 5554...")
+    print("Manage Favorite Quote System running on port 5555...")
 
     while True:
         message = socket.recv_string()
@@ -65,7 +72,7 @@ def fav_main():
 
         elif message.startswith("get:"): #get the quote number but not remove yet
             index = int(message.split("get:", 1)[1].strip())
-            response, quote = remove_quote(index) 
+            response, quote = get_quote(index) 
             if quote is None:
                 response = "Invalid quote number."
             else:

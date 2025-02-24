@@ -23,7 +23,7 @@ def main():
 
             save_option = input("Do you want to save this quote? (Yes/No): ").strip().lower()
             if save_option == "yes":
-                socket.send_string(f"save:{quote}")  #send remove request with type
+                socket.send_string(f"save:{quote}")  #send save request with qupte
                 response = socket.recv_string() #should respond with saved successfully
                 print(response)
             elif save_option == "no":
