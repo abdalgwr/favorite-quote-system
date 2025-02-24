@@ -51,14 +51,27 @@ if message.startswith("save:"):
 **Request format: `"view_fav"`**
 The `view_fav` keyword tells the microservice to retrieve a list of user's favorite quotes. All you have to do is to include `view_fav` in `socket.send_string()`. See code below for an exmaple
 ```python
-    socket.send_string("view_fav")
+socket.send_string("view_fav")
 ```
 In the microservice `fav_quote.py`, after receiving the request `view_fav`, it performs the specific action `show_fav_quote()`
 ```python
-    message = socket.recv_string()
-    elif message == "view_fav":
-            response = show_fav_quote()
+message = socket.recv_string()
+elif message == "view_fav":
+    response = show_fav_quote()
 ```
 
 #### **3. Remove a specific quote from favorite**
 **Request format: `"get:{quote_number}"` AND `"remove"{quote_number}"`**
+The `get` keyword tells the microservice to retrieve the quote number that is associated with the quote and `remove` tells the microservice to remove that quote. All you have to do is the have the keyword `get:` or `remove:` and the user selected `quote_number`, together send them via `socket.send_string()`. So the microserver will know that you want get this quote and remove it. For example:
+```python
+quote_number = input("\nEnter the number of the specific quote that you wish to remove from favorites: ")
+socket.send_string(f"get:{quote_number}") #we send the quote number which user entered
+socket.send_string(f"remove:{quote_number}") #we send the quote number which user want to remove
+```
+In the microservice `fav_quote.py`, after receiving the request with the keyword, for example `remove:`, it will take in the `quote_nuber` and call the function `remove_quote()` to remove based on the number it receives.
+```python
+message = socket.recv_string()
+elif message.startswith("remove:"):
+    index = int(message.split("remove:", 1)[1].strip())
+    response, _ = remove_quote(index)  #get both response message and removed quote
+```

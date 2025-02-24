@@ -63,8 +63,8 @@ def fav_main():
             response = show_fav_quote()
             print(f"Received request '{message}', now fetching a list of favorite quotes...")
 
-        elif message.startswith("get_quote:"): #get the quote number but not remove yet
-            index = int(message.split("get_quote:", 1)[1].strip())
+        elif message.startswith("get:"): #get the quote number but not remove yet
+            index = int(message.split("get:", 1)[1].strip())
             response, quote = remove_quote(index) 
             if quote is None:
                 response = "Invalid quote number."
