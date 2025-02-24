@@ -71,7 +71,7 @@ quote_number = input("\nEnter the number of the specific quote that you wish to 
 socket.send_string(f"get:{quote_number}") #we send the quote number which user entered
 socket.send_string(f"remove:{quote_number}") #we send the quote number which user want to remove
 ```
-In the microservice `fav_quote.py`, after receiving the request with the keyword, for example `remove:`, it will take in the `quote_nuber` and call the function `remove_quote()` to remove based on the number it receives.
+In the microservice `fav_quote.py`, after receiving the request with the keyword, for example `remove:`, it will take in the `quote_nuber` and call the function `remove_quote()` to remove based on the number it receives
 ```python
 message = socket.recv_string()
 elif message.startswith("remove:"):
@@ -79,8 +79,55 @@ elif message.startswith("remove:"):
     response, _ = remove_quote(index)  #get both response message and removed quote
 ```
 
+
 ### **How to RECEIVE Data from the Microservice**
 Since the microservice follows the ZeroMQ REQ-REP pattern, every request must have a corresponding response. The microservice will send back responses based on the type of request it receives.
 
 #### **1. Save a Quote**
-**Receive format: `"re"`**
+**Receive format: `response = socket.recv_string()`**
+
+When a quote is saved, the microservice acknowledges it with a confirmation message. After sending the request, use `socket.recv_string()` to capture and print the response
+```python
+response = socket.recv_string() #should respond with Quote successfully saved!
+print(response)
+```
+In the microservice `fav_quote.py`, the response is sent back via `socket.send_string()` after processing the request
+```python
+response = add_to_favorites(quote) #note that add_to_favorites() returns "Quote successfully saved!"
+socket.send_string(response)
+```
+
+#### **2. Retrieve Favorite Quotes**
+**Receive format: `response = socket.recv_string()`**
+
+When requesting favorite quotes, the microservice responds with a formatted list of stored quotes. Capture the response and display it to the user with `socket.recv_string()`
+```python
+response = socket.recv_string() #should respond with a list of quotes
+print(response) 
+```
+In the microservice `fav_quote.py`, the response is send back via `socket.send_string()` after processing the request
+```python
+response = show_fav_quote() #note that show_fav_quote() returns a list of quotes retrived from favorites.json
+socket.send_string(response)
+```
+
+#### **3. Remove a specific quote from favorite**
+**Receive format: `response = socket.recv_string()`**
+
+To remove a quote, the microservice response with the specific quote number for removal
+```python
+response = socket.recv_string() #should respond with Successfully removed: {quote_number}!
+print(response)
+```
+In the microservice `fav_quote.py`, the response is send back via `socket.send_string()` after processing the request
+```python
+response, _ = remove_quote(index)  #remove_quote() should both response message and removed quote
+socket.send_string(response)
+```
+
+
+## UML Sequence Diagram
+
+The following diagram illustrates how requesting and receiving data works between client and the microserver:
+
+![UML Sequence Diagram](UML.png)
