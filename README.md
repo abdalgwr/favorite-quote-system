@@ -11,7 +11,7 @@ This microservice communicates using **ZeroMQ REQ-REP pattern**, meaning each re
 ## How to Run
 - Clone the repo to your local machine
 - In terimal 1, run the test program: python3 main.py 
-- In terminal 2, run the microserivce: python3
+- In terminal 2, run the microserivce: python3 fav_quote.py
 
 ---
 
