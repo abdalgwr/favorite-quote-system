@@ -8,6 +8,11 @@ This microservice provides a **ZeroMQ-based API** for managing favorite quotes. 
 
 This microservice communicates using **ZeroMQ REQ-REP pattern**, meaning each request **expects** a corresponding response.
 
+## How to Run
+- Clone the repo to your local machine
+- In terimal 1, run the test program: python3 main.py 
+- In terminal 2, run the microserivce: python3
+
 ---
 
 ## **Communication Contract**
